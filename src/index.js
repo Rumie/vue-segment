@@ -5,6 +5,10 @@ module.exports = {
       return
     }
 
+    if (!options.disabled && !options.cdnProxy) {
+      console.warn('No CDN Proxy Provided');
+    }
+
     const analytics = window.analytics = window.analytics || []
 
     if (analytics.initialize) {
@@ -59,8 +63,14 @@ module.exports = {
       const script = document.createElement('script')
       script.type = 'text/javascript'
       script.async = true
-      script.src = 'https://cdn.segment.com/analytics.js/v1/'
+
+      if(!options.disabled && !options.cdnProxy){
+        script.src = 'https://cdn.segment.com/analytics.js/v1/'
         + key + '/analytics.min.js'
+      } else {
+        script.src = 'https://' + options.cdnProxy + '/analytics.js/v1/'
+        + key + '/analytics.min.js'
+      }
 
       const first = document.getElementsByTagName('script')[0]
       first.parentNode.insertBefore(script, first)
