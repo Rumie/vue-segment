@@ -64,11 +64,11 @@ module.exports = {
       script.type = 'text/javascript'
       script.async = true
 
-      if(!options.disabled && !options.cdnProxy){
-        script.src = 'https://cdn.segment.com/analytics.js/v1/'
+      if(options && options.disabled && options.cdnProxy){
+        script.src = 'https://' + options.cdnProxy + '/analytics.js/v1/'
         + key + '/analytics.min.js'
       } else {
-        script.src = 'https://' + options.cdnProxy + '/analytics.js/v1/'
+        script.src = 'https://cdn.segment.com/analytics.js/v1/'
         + key + '/analytics.min.js'
       }
 
