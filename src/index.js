@@ -7,6 +7,7 @@ module.exports = {
 
     if (!options.disabled && !options.cdnProxy) {
       console.warn('No CDN Proxy Provided');
+      options.cdnProxy = null;
     }
 
     const analytics = window.analytics = window.analytics || []
@@ -59,13 +60,13 @@ module.exports = {
 
     analytics.SNIPPET_VERSION = '4.1.0';
 
-    analytics.load = function (key, options) {
+    analytics.load = function (key, cdnProxy, options) {
       const script = document.createElement('script')
       script.type = 'text/javascript'
       script.async = true
 
-      if(options && !options.disabled && options.cdnProxy){
-        script.src = 'https://' + options.cdnProxy + '/analytics.js/v1/'
+      if(cdnProxy != null){
+        script.src = 'https://' + cdnProxy + '/analytics.js/v1/'
         + key + '/analytics.min.js'
       } else {
         script.src = 'https://cdn.segment.com/analytics.js/v1/'
@@ -78,7 +79,7 @@ module.exports = {
     }
 
     if (!options.disabled) {
-      analytics.load(options.writeKey, options.settings)
+      analytics.load(options.writeKey, options.cdnProxy, options.settings)
     }
 
     if (options.router) {
